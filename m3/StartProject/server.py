@@ -1,6 +1,8 @@
 import os
 import json
 import cherrypy
+import subprocess
+from scripts import parse_json, generating_owl
 import time
 from socket import *
 from jinja2 import Environment, FileSystemLoader
@@ -115,11 +117,18 @@ class Server(object):
         with open(os.path.join(resources_dir, "output.json"), "w") as f:
             json.dump(self.data, f)
 
-        parse_script_path = os.path.join(scripts_dir, "parse_json.py")
-        os.system(parse_script_path)
+        # parse_script_path = os.path.join(scripts_dir, "parse_json.py")
+        # proc = subprocess.Popen(["python", parse_script_path], stdout=subprocess.PIPE, shell=True)
+        # (out, err) = proc.communicate()
+        # print("Out: {} | Err: {}".format(out, err))
+        # os.system(parse_script_path)
+        output_parser = parse_json.run()
+        print("Status save: {}".format(output_parser))
 
-        generate_script_path = os.path.join(scripts_dir, "generating_owl.py")
-        os.system(generate_script_path)
+        # generate_script_path = os.path.join(scripts_dir, "generating_owl.py")
+        # os.system(generate_script_path)
+        output_generator = generating_owl.run()
+        print("Status generator: {}".format(output_generator))
         return {"status": "ok"}
         pass
 
