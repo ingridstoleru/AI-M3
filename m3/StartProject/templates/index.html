@@ -24,6 +24,7 @@
         <th>From</th>
         <th>Relation</th>
         <th>To</th>
+        <th>Type</th>
         <th>Value</th>
         <th>Text</th>
         <th>Action</th>
@@ -35,8 +36,14 @@
         {% for to_concept in input_dict[concept][relation] -%}
           <tr>
             <td>{{concept}}</td>
-            <td>{{relation}}</td>
+            <td>{{relation}}</td>                        
             <td>{{to_concept}}</td>
+            <td>{% if relation == "Is a" -%} 
+                ->
+                {% else -%}
+               <->
+                {% endif -%}
+            </td>
             <td>{{input_dict[concept][relation][to_concept][0]}}</td>
             <td>{% for prop in input_dict[concept][relation][to_concept][1:] -%}
                   {{prop}}
