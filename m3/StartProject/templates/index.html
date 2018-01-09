@@ -17,7 +17,13 @@
           <button class="btn btn-default navbar-btn navbar-right" onclick="reload_json()">Reload</button>
     </div>
   </nav>
+  <br>
   <div class="container">
+    <div class="input-group input-group-lg">
+     <input class="form-control" type="text" placeholder="{{input_dict['search']}}" id="search_text">
+     <button class="btn btn-outline-success" onclick="search_function()">Search</button>
+   </div>
+    <br>
   <table class="table table-hover">
     <thead>
       <tr>
@@ -31,9 +37,9 @@
       </tr>
     </thead>
     <tbody>
-        {% for concept in input_dict -%}
-        {% for relation in input_dict[concept] -%}
-        {% for to_concept in input_dict[concept][relation] -%}
+        {% for concept in input_dict["output"] -%}
+        {% for relation in input_dict["output"][concept] -%}
+        {% for to_concept in input_dict["output"][concept][relation] -%}
           <tr>
             <td>{{concept}}</td>
             <td>{{relation}}</td>                        
@@ -44,8 +50,8 @@
                <->
                 {% endif -%}
             </td>
-            <td>{{input_dict[concept][relation][to_concept][0]}}</td>
-            <td>{% for prop in input_dict[concept][relation][to_concept][1:] -%}
+            <td>{{input_dict["output"][concept][relation][to_concept][0]}}</td>
+            <td>{% for prop in input_dict["output"][concept][relation][to_concept][1:] -%}
                   {{prop}}
                 {% endfor -%}
             </td>
@@ -132,8 +138,10 @@
   </div>
 
 </div>
-    <script>
+    <!-- Optional JavaScript -->
+  <script>
       var url = "http://127.0.0.1:8090/";
+
 
       function getRequestInfo(url, reqType, reqData, callback) {
                 console.log("In getRequestInfo")
@@ -218,6 +226,20 @@
         });
         $('#customModal').modal('show');
 
+      }
+
+      function search_function()
+      {
+        data=document.getElementById("search_text").value
+        window.location.href = '/?search=' + '"' + data + '"'
+      }
+
+      window.onload = function() {
+      $("#search_text").on('keyup', function (e) {
+          if (e.keyCode == 13) {
+              search_function();
+          }
+      });
       }
 
       function restore_json()
@@ -310,8 +332,7 @@
 
 
     </script>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
     <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
