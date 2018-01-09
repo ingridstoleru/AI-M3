@@ -1,3 +1,4 @@
+import re
 import os
 import json
 import cherrypy
@@ -17,6 +18,15 @@ scripts_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts'
 class Server(object):
     def __init__(self):
         self.data = self._load_data()
+        self.regexes = {
+            'from:': 'from:(("[^"]+")|([^\s]+))',
+            'to:': 'to:(("[^"]+")|([^\s]+))',
+            'rel:': 'rel:(("[^"]+")|([^\s]+))',
+            'text:': 'text:(("[^"]+")|([^\s]+))',
+            'value:': 'value:(("[^"]+")|([^\s]+))',
+        }
+        for x in self.regexes:
+            self.regexes[x] = re.compile(self.regexes[x])
 
     def _load_data(self):
         old_json = os.path.join(resources_dir, "output.json")
@@ -27,11 +37,75 @@ class Server(object):
             return json.loads(f.read())
 
     @cherrypy.expose
-    def index(self):
+    def index(self, search=""):
         templates_env = Environment(loader=FileSystemLoader(templates_dir))
         template = templates_env.get_template('index.html')
+        results = dict()
+        output = dict()
+
+        ok = False
+        if search.startswith('"'):
+            search = search[1:-1]
+
+        for item in self.regexes:
+            if item in search:
+                ok = True
+                result = self.regexes[item].search(search)
+                if item not in results:
+                    results[item] = result.group(1)
+                    if results[item].startswith('"'):
+                        results[item] = results[item][1:-1]
+                    results[item] = re.compile(results[item])
+            else:
+                results[item] = re.compile(".*")
+
+        if not ok:
+            to_search = re.compile(search)
+
+        for from_item in self.data:
+            for relation_item in self.data[from_item]:
+                for to in self.data[from_item][relation_item]:
+                    [value, text] = [self.data[from_item][relation_item][to][0], self.data[from_item][relation_item][to][1:]]
+                    if ok:
+                        if results['from:'].match(from_item) and results['rel:'].match(relation_item) and \
+                                results['to:'].match(to) and results['value:'].match(str(value)):
+                            temp_ok = False
+                            new_text = []
+                            for item in text:
+                                if results['text:'].match(item):
+                                    temp_ok = True
+                                    new_text.append(item)
+                            if temp_ok:
+                                if from_item not in output:
+                                    output[from_item] = dict()
+                                if relation_item not in output[from_item]:
+                                    output[from_item][relation_item] = dict()
+                                output[from_item][relation_item][to] = [value] + new_text
+                    else:
+                        new_text = []
+                        temp_ok = False
+                        for item in text:
+                            if to_search.match(item):
+                                temp_ok = True
+                                new_text.append(item)
+
+                        if to_search.match(from_item) or to_search.match(relation_item) or \
+                               to_search.match(to) or to_search.match(str(value)) or temp_ok:
+
+                            if from_item not in output:
+                                output[from_item] = dict()
+                            if relation_item not in output[from_item]:
+                                output[from_item][relation_item] = dict()
+                            if not temp_ok:
+                                output[from_item][relation_item][to] = [value] + text
+                            else:
+                                output[from_item][relation_item][to] = [value] + new_text
+
         # return template.render({})
-        return template.render({"input_dict": self.data})
+        custom_dict = dict()
+        custom_dict["output"] = output
+        custom_dict["search"] = search
+        return template.render({"input_dict": custom_dict})
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -83,7 +157,7 @@ class Server(object):
             # self.data[new_json['from']] = new_new_data
             # print(self.data)
         except Exception as e:
-            return {"status": "bad"}
+            return {"status": "error", 'message': str(e)}
 
         return {"status": "ok"}
 
@@ -109,7 +183,7 @@ class Server(object):
             if len(self.data[old_json['from']]) == 0:
                 del(self.data[old_json['from']])
         except Exception as e:
-            return {"status": "ok"}
+            return {"status": "error", 'message': str(e)}
 
 
     @cherrypy.expose
