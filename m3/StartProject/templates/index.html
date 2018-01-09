@@ -144,6 +144,11 @@
                     success: function (response) {
                         console.log("Ok function")
                         callback(response);
+                        if (response["status"] == "ok")
+                          location.reload()
+                         else {
+                          alert("Error: " + response["message"]);
+                         }
                         return {
                             "status": true,
                             "result": response
@@ -208,7 +213,8 @@
         console.log("Ready to post stuff")
         getRequestInfo(url + "replace", "post", post_this, function(data){
           console.log(data);
-          location.reload()
+          //if (data["status"] == "ok")
+            //location.reload()
         });
         $('#customModal').modal('show');
 
@@ -221,7 +227,8 @@
         {
           getRequestInfo(url + "reload", "post", {}, function(data){
             console.log(data);
-            location.reload()
+            //if (data["status"] == "ok")
+              //location.reload()
           });
          }
          else
@@ -237,7 +244,8 @@
         {
           getRequestInfo(url + "reload", "post", {}, function(data){
             console.log(data);
-            location.reload()
+            //if (data["status"] == "ok")
+              //location.reload()
           });
          }
          else
@@ -259,7 +267,8 @@
            }
          getRequestInfo(url + "create", "post", post_this, function(data){
           console.log(data);
-          location.reload()
+          //if (data["status"] == "ok")
+            //location.reload()
         });
       }
 
@@ -267,7 +276,8 @@
       {
          getRequestInfo(url + "save", "post", {}, function(data){
           console.log(data);
-          location.reload()
+          //if (data["status"] == "ok")
+            //location.reload()
         });
       }
 
@@ -288,7 +298,8 @@
 
           getRequestInfo(url + "delete", "post", post_this, function(data){
           console.log(data);
-          location.reload()
+          //if (data["status"] == "ok")
+            //location.reload()
         });
         }
         else

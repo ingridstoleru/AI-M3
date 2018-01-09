@@ -61,13 +61,13 @@ class Server(object):
 
         try:
             old_data = self.data[old_json['from']][old_json['relation']][old_json['to']]
-            print(self.data)
+            # print(self.data)
             del(self.data[old_json['from']][old_json['relation']][old_json['to']])
             if len(self.data[old_json['from']][old_json['relation']]) == 0:
                 del(self.data[old_json['from']][old_json['relation']])
             if len(self.data[old_json['from']]) == 0:
                 del (self.data[old_json['from']])
-            print(self.data)
+            # print(self.data)
             if new_json['from'] not in self.data:
                 self.data[new_json['from']] = dict()
             if new_json['relation'] not in self.data[new_json['from']]:
@@ -81,7 +81,7 @@ class Server(object):
             # new_data = dict()
             # new_data[new_json['from']] = new_new_data
             # self.data[new_json['from']] = new_new_data
-            print(self.data)
+            # print(self.data)
         except Exception as e:
             return {"status": "bad"}
 
@@ -102,7 +102,7 @@ class Server(object):
 
         try:
             old_data = self.data[old_json['from']][old_json['relation']][old_json['to']]
-            print(self.data)
+            # print(self.data)
             del(self.data[old_json['from']][old_json['relation']][old_json['to']])
             if len(self.data[old_json['from']][old_json['relation']]) == 0:
                 del(self.data[old_json['from']][old_json['relation']])
