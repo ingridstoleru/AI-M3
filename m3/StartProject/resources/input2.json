@@ -1,0 +1,32 @@
+{
+	"cold": {
+		"caused by": {
+			"cold virus": [5, "prop1", "prop2", "prop3", "prop4", "prop5"],
+			"weak immune system": [3, "prop1", "prop2", "prop3"]
+		},
+		"treated by": {
+			"hot drinks": [1, "prop1"],
+			"sleeping": [3, "prop1", "prop2", "prop3"]
+		},
+		"treated by me": {
+			"hot drinks": [1, "prop1"],
+			"sleeping": [3, "prop1", "prop2", "prop3"]
+		}
+	},
+	"sore throat": {
+		"caused by": {
+			"bacterial infection": [6, "prop1", "prop2", "prop3", "prop4", "prop5", "prop6"],
+			"cold drinks": [1, "prop1"]
+		}
+	},
+	"cold2": {
+		"caused by": {
+			"cold virus": [5, "prop1", "prop2", "prop3", "prop4", "prop5"],
+			"weak immune system": [3, "prop1", "prop2", "prop3"]
+		},
+		"treated by": {
+			"hot drinks": [1, "prop1"],
+			"sleeping": [3, "prop1", "prop2", "prop3"]
+		}
+	}
+}
