@@ -39,13 +39,25 @@ class Server(object):
         old_json = json.loads(old)
         new_json = json.loads(new)
         if old_json['from'] not in self.data:
-            return {"status": "bad"}
+            return {"status": "error", "message": "field {} not found in ontology".format(old_json['from'])}
 
         if old_json['relation'] not in self.data[old_json['from']]:
-            return {"status": "bad"}
+            return {"status": "error", "message": "relation {} not found in ontology {}".format(old_json['relation'], old_json['from'])}
 
         if old_json['to'] not in self.data[old_json['from']][old_json['relation']]:
-            return {"status": "bad"}
+            return {"status": "error", "message": "to {} not found in ontology {} with relation {}".format(old_json['to'], old_json['from'], old_json['relation'])}
+
+
+        if new_json['from'] in self.data:
+            if new_json['relation'] in self.data[new_json['from']]:
+                if new_json['to'] in self.data[new_json['from']][new_json['relation']]:
+                    return {'status': 'error', 'message': 'already exists'}
+
+        if new_json['relation'].strip().lower() == 'is_a':
+            if new_json['to'] in self.data:
+                if new_json['relation'] in self.data[new_json['to']]:
+                    if new_json['from'] in self.data[new_json['to']][new_json['relation']]:
+                        return {'status': 'error', 'message': 'is_a relation already exists in oposite direction'}
 
         try:
             old_data = self.data[old_json['from']][old_json['relation']][old_json['to']]
@@ -80,13 +92,13 @@ class Server(object):
     def delete(self, old):
         old_json = json.loads(old)
         if old_json['from'] not in self.data:
-            return {"status": "bad"}
+            return {"status": "error", "message": "field {} not found in ontology".format(old_json['from'])}
 
         if old_json['relation'] not in self.data[old_json['from']]:
-            return {"status": "bad"}
+            return {"status": "error", "message": "relation {} not found in ontology {}".format(old_json['relation'], old_json['from'])}
 
         if old_json['to'] not in self.data[old_json['from']][old_json['relation']]:
-            return {"status": "bad"}
+            return {"status": "error", "message": "to {} not found in ontology {} with relation {}".format(old_json['to'], old_json['from'], old_json['relation'])}
 
         try:
             old_data = self.data[old_json['from']][old_json['relation']][old_json['to']]
@@ -104,6 +116,18 @@ class Server(object):
     @cherrypy.tools.json_out()
     def create(self, new):
         new_json = json.loads(new)
+
+        if new_json['from'] in self.data:
+            if new_json['relation'] in self.data[new_json['from']]:
+                if new_json['to'] in self.data[new_json['from']][new_json['relation']]:
+                    return {'status': 'error', 'message': 'already exists'}
+
+        if new_json['relation'].strip().lower() == 'is_a':
+            if new_json['to'] in self.data:
+                if new_json['relation'] in self.data[new_json['to']]:
+                    if new_json['from'] in self.data[new_json['to']][new_json['relation']]:
+                        return {'status': 'error', 'message': 'is_a relation already exists in oposite direction'}
+
         if new_json['from'] not in self.data:
             self.data[new_json['from']] = dict()
         if new_json['relation'] not in self.data[new_json['from']]:
