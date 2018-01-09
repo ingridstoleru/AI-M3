@@ -2,5 +2,5 @@ cold	caused by	weak immune system
 cold	treated by	hot drinks
 cold	caused by ana	cold virus
 sore throat	caused by	bacterial infection
-aaa	aaa	aaa
 aanana	nanskan	anskank
+aaa	is_a	aaa

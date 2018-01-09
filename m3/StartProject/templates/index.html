@@ -38,7 +38,7 @@
             <td>{{concept}}</td>
             <td>{{relation}}</td>                        
             <td>{{to_concept}}</td>
-            <td>{% if relation == "Is a" -%} 
+            <td>{% if relation|lower == "is_a" -%} 
                 ->
                 {% else -%}
                <->
