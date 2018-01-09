@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Hello, world!</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  </head>
+  <body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="nav navbar-nav" id="navbarNav">
+          <button class="btn btn-warning navbar-btn navbar-right" data-toggle="modal" data-target="#add_modal">Add Item</button>
+          <button class="btn btn-danger navbar-btn navbar-right" onclick="save_json()">Save</button>
+          <button class="btn btn-default navbar-btn navbar-right" onclick="reload_json()">Reload</button>
+    </div>
+  </nav>
+  <div class="container">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>From</th>
+        <th>Relation</th>
+        <th>To</th>
+        <th>Value</th>
+        <th>Text</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for concept in input_dict -%}
+        {% for relation in input_dict[concept] -%}
+        {% for to_concept in input_dict[concept][relation] -%}
+          <tr>
+            <td>{{concept}}</td>
+            <td>{{relation}}</td>
+            <td>{{to_concept}}</td>
+            <td>{{input_dict[concept][relation][to_concept][0]}}</td>
+            <td>{% for prop in input_dict[concept][relation][to_concept][1:] -%}
+                  {{prop}}
+                {% endfor -%}
+            </td>
+            <td class="btn-group">
+                <button type="button" class="btn btn-warning" onclick="edit(this)">Edit</button>
+                <button type="button" class="btn btn-danger" onclick="remove(this)">Remove</button>
+            </td>
+          </tr>
+        {% endfor -%}
+        {% endfor -%}
+        {% endfor -%}
+    </tbody>
+  </table>
+
+  <div id="add_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="modal-from">From concept:</label>
+            <input type="text" id="add-modal-from" class="form-control" >
+          </div>
+          <div class="form-group">
+            <label for="modal-rel">Relation:</label>
+            <input type="text" id="add-modal-rel" class="form-control" >
+          </div>
+          <div class="form-group">
+            <label for="modal-to">To concept:</label>
+            <input type="text" id="add-modal-to" class="form-control" >
+          </div>
+          <div class="form-group">
+            <label for="add-modal-value">Value:</label>
+            <input type="text" id="add-modal-value" class="form-control" >
+          </div>
+          <div class="form-group">
+            <label for="add-modal-text">Text:</label>
+            <input type="text" id="add-modal-text" class="form-control" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" onclick="add(this)">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+
+    </div>
+  </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="customModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="modal-from">From concept:</label>
+            <input type="text" id="modal-from" class="form-control" >
+          </div>
+          <div class="form-group">
+            <label for="modal-rel">Relation:</label>
+            <input type="text" id="modal-rel" class="form-control" >
+          </div>
+          <div class="form-group">
+            <label for="modal-to">To concept:</label>
+            <input type="text" id="modal-to" class="form-control" >
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" onclick="save()">Save</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+    <script>
+      var url = "http://127.0.0.1:8090/";
+
+      function getRequestInfo(url, reqType, reqData, callback) {
+                console.log("In getRequestInfo")
+                $.ajax({
+                    url: url,
+                    type: reqType,
+                    data: reqData,
+                    success: function (response) {
+                        console.log("Ok function")
+                        callback(response);
+                        return {
+                            "status": true,
+                            "result": response
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log("Bad function response")
+                        return {
+                            "status": false,
+                            "result": null,
+                            "xhr": jqXHR,
+                            "textStatus": textStatus,
+                            "errorThrown": errorThrown
+                        }
+                    }
+                }).done(function(){
+
+                });
+                return {
+                    "status": false,
+                    "result": null
+                }
+            }
+
+
+      function myFunc(obj)
+      {
+        console.log("this is my obj: " + obj.cells.item(1).innerHTML)
+        //$('#customModal').modal('show');
+      }
+
+      function edit(obj) {
+        console.log(obj.parentNode.parentNode);
+        var par = obj.parentNode.parentNode;
+        document.getElementById("modal-from").value = par.cells.item(0).innerHTML;
+        document.getElementById("modal-rel").value = par.cells.item(1).innerHTML;
+        document.getElementById("modal-to").value = par.cells.item(2).innerHTML;
+
+        document.getElementById("modal-from").setAttribute("old", par.cells.item(0).innerHTML);
+        document.getElementById("modal-rel").setAttribute("old", par.cells.item(1).innerHTML);
+        document.getElementById("modal-to").setAttribute("old", par.cells.item(2).innerHTML);
+
+        $('#customModal').modal('show');
+      }
+
+      function save() {
+        var old_dict = {
+          from: document.getElementById("modal-from").getAttribute("old"),
+          relation: document.getElementById("modal-rel").getAttribute("old"),
+          to: document.getElementById("modal-to").getAttribute("old"),
+        }
+        var new_dict = {
+          from: document.getElementById("modal-from").value,
+          relation: document.getElementById("modal-rel").value,
+          to: document.getElementById("modal-to").value
+          }
+
+        var post_this = {
+          old: JSON.stringify(old_dict),
+          new: JSON.stringify(new_dict),
+        }
+        console.log("Ready to post stuff")
+        getRequestInfo(url + "replace", "post", post_this, function(data){
+          console.log(data);
+          location.reload()
+        });
+        $('#customModal').modal('show');
+
+      }
+
+      function restore_json()
+      {
+      var r = confirm("Are you sure you want to reload the data (all unsaved work will be lost)?")
+        if (r == true)
+        {
+          getRequestInfo(url + "reload", "post", {}, function(data){
+            console.log(data);
+            location.reload()
+          });
+         }
+         else
+         {
+          console.log("restore rejected")
+         }
+      }
+
+      function reload_json()
+      {
+        var r = confirm("Are you sure you want to reload the data (all unsaved work will be lost)?")
+        if (r == true)
+        {
+          getRequestInfo(url + "reload", "post", {}, function(data){
+            console.log(data);
+            location.reload()
+          });
+         }
+         else
+         {
+          console.log("reload rejected")
+         }
+      }
+
+      function add(obj){
+        var data = {
+          from: document.getElementById("add-modal-from").value,
+          relation: document.getElementById("add-modal-rel").value,
+          to: document.getElementById("add-modal-to").value,
+          value: document.getElementById("add-modal-value").value,
+          text: document.getElementById("add-modal-text").value,
+        }
+        var post_this = {
+            new: JSON.stringify(data)
+           }
+         getRequestInfo(url + "create", "post", post_this, function(data){
+          console.log(data);
+          location.reload()
+        });
+      }
+
+      function save_json()
+      {
+         getRequestInfo(url + "save", "post", {}, function(data){
+          console.log(data);
+          location.reload()
+        });
+      }
+
+      function remove(obj) {
+        var par = obj.parentNode.parentNode;
+        var r = confirm("Are you sure you want to delete this item: " + par.cells.item(0).innerHTML + "-" + par.cells.item(1).innerHTML + "-" + par.cells.item(2).innerHTML + "?")
+        if (r == true)
+        {
+          console.log("delete approved")
+           var data = {
+            from: par.cells.item(0).innerHTML,
+            relation: par.cells.item(1).innerHTML,
+            to: par.cells.item(2).innerHTML,
+           }
+           var post_this = {
+            old: JSON.stringify(data)
+           }
+
+          getRequestInfo(url + "delete", "post", post_this, function(data){
+          console.log(data);
+          location.reload()
+        });
+        }
+        else
+        {
+          console.log("delete rejected")
+        }
+      }
+
+
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+  </body>
+</html>
