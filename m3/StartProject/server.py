@@ -216,9 +216,43 @@ class Server(object):
         self.data[new_json['from']][new_json['relation']][new_json['to']] = [new_json["value"], new_json["text"]]
         return {"status": "ok"}
 
+    def isCyclicUtil(self, v, visited, recStack,relations,type_of_relations):
+        visited[v] = True
+        recStack[v] = True
+
+        for node in range(len(relations)):
+            if visited[node] == False and node!= v and relations[v][2]==relations[node][0] and relations[v][1] in type_of_relations:
+                if self.isCyclicUtil(node,visited,recStack,relations,type_of_relations) == True:
+                    return True
+            elif recStack[node] == True and node!= v and relations[v][2]==relations[node][0] and relations[v][1] in type_of_relations:
+                return True
+ 
+        recStack[v] = False
+        return False
+
+    def isCyclic(self,relations,type_of_relations):
+        visited = [False] * len(relations)
+        recStack = [False] * len(relations)
+        for node in range(len(relations)):
+                if self.isCyclicUtil(node,visited,recStack,relations,type_of_relations) == True :
+                    return True      
+        return False
+    def _check_for_cycles(self):
+        type_of_relations=["is_a"]#for moment only this ,if we want more we need just to add here the respective relationships
+        relations=[]
+        
+        for from_item in self.data:
+            for relation_item in self.data[from_item]:       
+                    for to in self.data[from_item][relation_item]:
+                        relations.append((from_item,relation_item,to))
+
+        return self.isCyclic(relations,type_of_relations)
+ 
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def save(self):
+        if(self._check_for_cycles == True):
+             {'status': 'error', 'message': 'there are cycles in the current relationships!'}
         with open(os.path.join(resources_dir, "output.json"), "w") as f:
             json.dump(self.data, f)
 
