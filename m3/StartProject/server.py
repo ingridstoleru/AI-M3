@@ -3,7 +3,7 @@ import os
 import json
 import cherrypy
 import subprocess
-from scripts import parse_json, generating_owl
+from scripts import parse_json, generating_owl, onto_history
 import time
 from socket import *
 from jinja2 import Environment, FileSystemLoader
@@ -35,6 +35,13 @@ class Server(object):
                 return json.loads(f.read())
         with open(os.path.join(resources_dir, "input.json")) as f:
             return json.loads(f.read())
+
+    @cherrypy.expose
+    def history(self, search="history"):
+        templates_env = Environment(loader=FileSystemLoader(templates_dir))
+        template = templates_env.get_template('history.html')  
+        json_data = onto_history.addDataToJson()
+        return template.render({"input_dict": json_data})
 
     @cherrypy.expose
     def index(self, search=""):

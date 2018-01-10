@@ -37,20 +37,28 @@ class DB():
                              (str(json.dumps(ontology)), datetime.datetime.now(), str(difference)))
 
 
-
 def create_table(conn):
     conn.execute('''create table version (ontology text, date_added date, differences text)''')
     d = dict()
     conn.execute("insert into version(ontology, date_added, differences) values(?, ?, ?)", (json.dumps(d),datetime.datetime.now(),''))
 
+def addDataToJson():
+    dir_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "resources")
+    dbObj = DB(os.path.join(dir_path, "history.db"))
+    dbObj.execute('select * from version')
+    json_data = dict()
+    for i in dbObj.cursors.fetchall():
+        json_data[str(i[1])] = i[2]
+    return json_data
 
 if __name__ == '__main__':
     dir_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "resources")
     dbObj = DB(os.path.join(dir_path, "history.db"))
     j1 = json.load(open(r'D:\work\Anul3\AI\GIT\AI-M3\m3\StartProject\resources\input.json'))
     j2 = json.load(open(r'D:\work\Anul3\AI\GIT\AI-M3\m3\StartProject\resources\input2.json'))
-    # create_table(dbObj)
-    # dbObj.insert_into_table(j2)
     dbObj.execute('select * from version')
-    for i in dbObj.cursors.fetchall():
-        print(i)
+    #for i in dbObj.cursors.fetchall():
+    #print(i[2])  
+    #create_table(dbObj)
+    #dbObj.insert_into_table(j2)
+    
