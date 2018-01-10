@@ -31,13 +31,13 @@
   <table class="table table-hover tablesorter">
     <thead>
       <tr>
-        <th onclick="sortTable(this)">From</th>
-        <th onclick="sortTable(this)">Relation</th>
-        <th onclick="sortTable(this)">To</th>
-        <th onclick="sortTable(this)">Type</th>
-        <th onclick="sortTable(this)">Value</th>
-        <th onclick="sortTable(this)">Text</th>
-        <th onclick="sortTable(this)">Action</th>
+        <th>From</th>
+        <th>Relation</th>
+        <th>To</th>
+        <th>Type</th>
+        <th>Value</th>
+        <th>Text</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -77,10 +77,10 @@
 		<img src="http://tablesorter.com/addons/pager/icons/next.png" class="next"/>
 		<img src="http://tablesorter.com/addons/pager/icons/last.png" class="last"/>
 		<select class="pagesize">                       
-			<option selected="selected"  value="2">2</option>
-			<option value="3">3</option>
-			<option value="4">4</option>
-			<option  value="6">6</option>
+			<option selected="selected"  value="10">10</option>
+			<option value="20">20</option>
+			<option value="30">30</option>
+			<option value="40">40</option>
 		</select>
 	</form>
 </div>
@@ -279,6 +279,7 @@
                $("table").tablesorter({widthFixed: true, widgets: ['zebra']}).tablesorterPager({container: $("#pager")}); 
           }  
       ); 
+ 
 
       function restore_json()
       {
