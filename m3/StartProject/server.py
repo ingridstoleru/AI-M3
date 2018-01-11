@@ -237,8 +237,9 @@ class Server(object):
                 if self.isCyclicUtil(node,visited,recStack,relations,type_of_relations) == True :
                     return True      
         return False
+
     def _check_for_cycles(self):
-        type_of_relations=["is_a"]#for moment only this ,if we want more we need just to add here the respective relationships
+        type_of_relations=["is_a"]#for moment only this, if we want more we need just to add here the respective relationships
         relations=[]
         
         for from_item in self.data:
