@@ -16,9 +16,10 @@
   <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="nav navbar-nav" id="navbarNav">
-          <button class="btn btn-warning navbar-btn navbar-right" data-toggle="modal" data-target="#add_modal">Add Item</button>
-          <button class="btn btn-danger navbar-btn navbar-right" onclick="save_json()">Save</button>
-          <button class="btn btn-default navbar-btn navbar-right" onclick="reload_json()">Reload</button>
+    	<button class="btn btn-default navbar-btn navbar-right" data-toggle="modal" data-target="#help">Help</button>
+    	<button class="btn btn-danger navbar-btn navbar-right" onclick="save_json()">Save</button>
+        <button class="btn btn-warning navbar-btn navbar-right" onclick="reload_json()">Reload</button>
+        <button class="btn btn-warning navbar-btn navbar-right" data-toggle="modal" data-target="#add_modal">Add Item</button>
     </div>
   </nav>
   <br>
@@ -31,13 +32,13 @@
   <table class="table table-hover tablesorter">
     <thead>
       <tr>
-        <th>From</th>
-        <th>Relation</th>
-        <th>To</th>
-        <th>Type</th>
-        <th>Value</th>
-        <th>Text</th>
-        <th>Action</th>
+        <th> From </th>
+        <th> Relation </th>
+        <th> To </th>
+        <th> Type </th>
+        <th> Value </th>
+        <th> Text </th>
+        <th> Action </th>
       </tr>
     </thead>
     <tbody>
@@ -127,6 +128,66 @@
 
     </div>
   </div>
+  </div>
+
+  <div id="help" class="modal fade" role="dialog">
+  	<div class="modal-dialog">
+  		<div class="modal-content">
+  			<div class="modal-header">
+  				<button type="button" class="close" data-dismiss="modal">&times;</button>
+  			</div>
+  			<div class="modal-body">
+  				<h2> &ensp; Artificial Intelligence <br> &ensp; &ensp; &ensp; Project – Module 3 <br> <br> </h2>
+  				<h3> &ensp;Help on the module webpage </h3>
+  				<p> &ensp; The webpage has 2 main sections: the main menu un the upper left corner and the center area.<br>
+  				The menu on the upper left corner of the page contains 3 buttons: <b>“Add Item”</b>, <b>“Save”</b> and <b>“Reload”</b>.</p>
+  				<h4> &ensp; Main menu </h4>
+  				<h5> &ensp; The <i>Add Item</i> button </h5>
+  				<p> &ensp; Upon selection, it will prompt a new window that will ask the user to enter the required data for a new relation. 
+  				The new window will ask the user to fill the following fields: <br>
+  				<u>From concept:</u> the base concept <br>
+  				<u>Relation:</u> the relation between the two concepts <br>
+  				<u>To concept:</u> the target concept <br>
+  				<u>Value:</u> what kind of relation it is (unidirectional or adirectional) <br>
+  				<u>Text:</u> phrases where this relation is identified <br>
+  				<b> All fields are mandatory. </b></p>
+
+  				<p>After completing all fields with the right type of data, the user can either save the newly entered relation by pressing the <b>“Save"</b> button or cancel the operation by pressing <b>“Cancel”</b>.
+				If the new relation imputed by the user leads to the formation of a cycle between the concepts.
+  				</p>
+  				<h5> &ensp; The <i>Save</i> button </h5>
+  				<p> &ensp; This button allows the user to save all the modifications made. 
+  				The modifications can be: the addition of new relations, the deletion of existing relations, the removal of relations. </p>
+  				<h5> &ensp; The <i>Reload</i> button </h5>
+  				<p> &ensp; Its effect is similar to a rollback. It goes back to the state before any modification performed by the user.
+  				After the user clicks on this button, it will be asked to confirm the action and acknowledge that all the work that was not save will be lost in the process. </p>
+  				<h5> &ensp; The <i>Help</i> button </h5>
+  				<p> &ensp; It opens a popup page in which the purpose of the site is presented and the actions allowed. </p>
+  				<h4> &ensp; Center area </h4>
+  				<p> &ensp; The center region of the page has the search bar.
+				Below the search bar there is a table with the relevant data to be displayed.
+				The table has 7 columns: <br>
+				<u>From:</u> first concept <br>
+				<u>Relation:</u> name of the relation between the two concepts <br>
+				<u>To:</u> second concept <br>
+				<u>Type:</u> simple graphical representation of the relation - which can be either unidirectional or adirectional <br>
+				<u>Value:</u> corresponding number for the relation <br>
+				<u>Text:</u> propositions where the relation is identified <br>
+				<u>Action:</u> two buttons <br>
+				An Edit button used to modify data about the entry and a Remove button that deletes the relation altogether. </p>
+
+				<p> Below the table it's the webpage pagination. <br> </p>
+				<h5> &ensp; The <i>Check History</i> button </h5>
+				<p> &ensp; At the bottom of the page it's the <b>“Check History”</b> button. This leads the user to a new page, similar to the center region of the main page. <br>
+				It has the search bar at the top and a table below it. In the table there are all the modifications performed on the ontology, with the date on which it was done, the content that was changed, and the options to restore or remove the modifications. </p>
+
+				<p> <u> Date:</u> The date at which the modification was performed. It is displayed in the format: <i>yyyy-mm-dd hh:mm:ss</i>. <br>
+				<u> Differences:</u> section of data edited in the JSON file (modified, added or removed) <br>
+				<u> Actions:</u> two buttons; restore modification or remove modification from history. <br>
+				Below the table we have the pagination. </p>
+  			</div>
+  		</div>
+  	</div>
   </div>
 
   <!-- Modal -->
@@ -365,8 +426,6 @@
         }
       }
 
-
-                                                                           
     </script>
 
   </body>
