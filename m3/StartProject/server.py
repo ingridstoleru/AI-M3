@@ -8,12 +8,13 @@ import time
 from socket import *
 from jinja2 import Environment, FileSystemLoader
 
-sock=socket()
+sock = socket()
 sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
 templates_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 resources_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources')
 scripts_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scripts')
+
 
 class Server(object):
     def __init__(self):
@@ -39,7 +40,7 @@ class Server(object):
     @cherrypy.expose
     def history(self, search="history"):
         templates_env = Environment(loader=FileSystemLoader(templates_dir))
-        template = templates_env.get_template('history.html')  
+        template = templates_env.get_template('history.html')
         json_data = onto_history.addDataToJson()
         return template.render({"input_dict": json_data})
 
@@ -72,7 +73,8 @@ class Server(object):
         for from_item in self.data:
             for relation_item in self.data[from_item]:
                 for to in self.data[from_item][relation_item]:
-                    [value, text] = [self.data[from_item][relation_item][to][0], self.data[from_item][relation_item][to][1:]]
+                    [value, text] = [self.data[from_item][relation_item][to][0],
+                                     self.data[from_item][relation_item][to][1:]]
                     if ok:
                         if results['from:'].match(from_item) and results['rel:'].match(relation_item) and \
                                 results['to:'].match(to) and results['value:'].match(str(value)):
@@ -97,7 +99,7 @@ class Server(object):
                                 new_text.append(item)
 
                         if to_search.match(from_item) or to_search.match(relation_item) or \
-                               to_search.match(to) or to_search.match(str(value)) or temp_ok:
+                                to_search.match(to) or to_search.match(str(value)) or temp_ok:
 
                             if from_item not in output:
                                 output[from_item] = dict()
@@ -123,11 +125,14 @@ class Server(object):
             return {"status": "error", "message": "field {} not found in ontology".format(old_json['from'])}
 
         if old_json['relation'] not in self.data[old_json['from']]:
-            return {"status": "error", "message": "relation {} not found in ontology {}".format(old_json['relation'], old_json['from'])}
+            return {"status": "error",
+                    "message": "relation {} not found in ontology {}".format(old_json['relation'], old_json['from'])}
 
         if old_json['to'] not in self.data[old_json['from']][old_json['relation']]:
-            return {"status": "error", "message": "to {} not found in ontology {} with relation {}".format(old_json['to'], old_json['from'], old_json['relation'])}
-
+            return {"status": "error",
+                    "message": "to {} not found in ontology {} with relation {}".format(old_json['to'],
+                                                                                        old_json['from'],
+                                                                                        old_json['relation'])}
 
         if new_json['from'] in self.data:
             if new_json['relation'] in self.data[new_json['from']]:
@@ -143,9 +148,9 @@ class Server(object):
         try:
             old_data = self.data[old_json['from']][old_json['relation']][old_json['to']]
             # print(self.data)
-            del(self.data[old_json['from']][old_json['relation']][old_json['to']])
+            del (self.data[old_json['from']][old_json['relation']][old_json['to']])
             if len(self.data[old_json['from']][old_json['relation']]) == 0:
-                del(self.data[old_json['from']][old_json['relation']])
+                del (self.data[old_json['from']][old_json['relation']])
             if len(self.data[old_json['from']]) == 0:
                 del (self.data[old_json['from']])
             # print(self.data)
@@ -176,22 +181,25 @@ class Server(object):
             return {"status": "error", "message": "field {} not found in ontology".format(old_json['from'])}
 
         if old_json['relation'] not in self.data[old_json['from']]:
-            return {"status": "error", "message": "relation {} not found in ontology {}".format(old_json['relation'], old_json['from'])}
+            return {"status": "error",
+                    "message": "relation {} not found in ontology {}".format(old_json['relation'], old_json['from'])}
 
         if old_json['to'] not in self.data[old_json['from']][old_json['relation']]:
-            return {"status": "error", "message": "to {} not found in ontology {} with relation {}".format(old_json['to'], old_json['from'], old_json['relation'])}
+            return {"status": "error",
+                    "message": "to {} not found in ontology {} with relation {}".format(old_json['to'],
+                                                                                        old_json['from'],
+                                                                                        old_json['relation'])}
 
         try:
             old_data = self.data[old_json['from']][old_json['relation']][old_json['to']]
             # print(self.data)
-            del(self.data[old_json['from']][old_json['relation']][old_json['to']])
+            del (self.data[old_json['from']][old_json['relation']][old_json['to']])
             if len(self.data[old_json['from']][old_json['relation']]) == 0:
-                del(self.data[old_json['from']][old_json['relation']])
+                del (self.data[old_json['from']][old_json['relation']])
             if len(self.data[old_json['from']]) == 0:
-                del(self.data[old_json['from']])
+                del (self.data[old_json['from']])
         except Exception as e:
             return {"status": "error", 'message': str(e)}
-
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -216,44 +224,47 @@ class Server(object):
         self.data[new_json['from']][new_json['relation']][new_json['to']] = [new_json["value"], new_json["text"]]
         return {"status": "ok"}
 
-    def isCyclicUtil(self, v, visited, recStack,relations,type_of_relations):
+    def isCyclicUtil(self, v, visited, recStack, relations, type_of_relations):
         visited[v] = True
         recStack[v] = True
 
         for node in range(len(relations)):
-            if visited[node] == False and node!= v and relations[v][2]==relations[node][0] and relations[v][1] in type_of_relations:
-                if self.isCyclicUtil(node,visited,recStack,relations,type_of_relations) == True:
+            if visited[node] == False and node != v and relations[v][2] == relations[node][0] and relations[v][
+                1] in type_of_relations:
+                if self.isCyclicUtil(node, visited, recStack, relations, type_of_relations) == True:
                     return True
-            elif recStack[node] == True and node!= v and relations[v][2]==relations[node][0] and relations[v][1] in type_of_relations:
+            elif recStack[node] == True and node != v and relations[v][2] == relations[node][0] and relations[v][
+                1] in type_of_relations:
                 return True
- 
+
         recStack[v] = False
         return False
 
-    def isCyclic(self,relations,type_of_relations):
+    def isCyclic(self, relations, type_of_relations):
         visited = [False] * len(relations)
         recStack = [False] * len(relations)
         for node in range(len(relations)):
-                if self.isCyclicUtil(node,visited,recStack,relations,type_of_relations) == True :
-                    return True      
+            if self.isCyclicUtil(node, visited, recStack, relations, type_of_relations) == True:
+                return True
         return False
 
     def _check_for_cycles(self):
-        type_of_relations=["is_a"]#for moment only this, if we want more we need just to add here the respective relationships
-        relations=[]
-        
-        for from_item in self.data:
-            for relation_item in self.data[from_item]:       
-                    for to in self.data[from_item][relation_item]:
-                        relations.append((from_item,relation_item,to))
+        type_of_relations = [
+            "is_a"]  # for moment only this, if we want more we need just to add here the respective relationships
+        relations = []
 
-        return self.isCyclic(relations,type_of_relations)
- 
+        for from_item in self.data:
+            for relation_item in self.data[from_item]:
+                for to in self.data[from_item][relation_item]:
+                    relations.append((from_item, relation_item, to))
+
+        return self.isCyclic(relations, type_of_relations)
+
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def save(self):
-        if(self._check_for_cycles == True):
-             {'status': 'error', 'message': 'there are cycles in the current relationships!'}
+        if (self._check_for_cycles == True):
+            {'status': 'error', 'message': 'there are cycles in the current relationships!'}
         with open(os.path.join(resources_dir, "output.json"), "w") as f:
             json.dump(self.data, f)
 
@@ -268,9 +279,10 @@ class Server(object):
         # generate_script_path = os.path.join(scripts_dir, "generating_owl.py")
         # os.system(generate_script_path)
         output_generator = generating_owl.run()
+        print(self.data)
+        onto_history.DB().insert_into_table(self.data)
         print("Status generator: {}".format(output_generator))
         return {"status": "ok"}
-        pass
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -280,6 +292,19 @@ class Server(object):
 
     def rebuild(self):
         pass
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def delete_history(self, date):
+        onto_history.DB().remove(date)
+        return {"status": "ok"}
+
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def restore_history(self, date):
+        restore_ontology = onto_history.DB().get_by_date(date)[0]
+        self.data = json.loads(restore_ontology)
+
 
 if __name__ == '__main__':
     cherrypy.quickstart(Server(), "/", "server.conf")
