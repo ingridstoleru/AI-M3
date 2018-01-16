@@ -1,74 +1,163 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <title>Hello, world!</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.2/js/jquery.tablesorter.min.js"></script> 
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.2/js/jquery.tablesorter.min.js"></script>
     <script type="text/javascript" src="http://tablesorter.com/addons/pager/jquery.tablesorter.pager.js"></script>
 
-  </head>
-  <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  </nav>
-  <br>
-  <div class="container">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+</nav>
+<br>
+<div class="container">
     <div class="input-group input-group-lg">
-     <input class="form-control" type="text" placeholder="{{input_dict['search']}}" id="search_text">
-     <button class="btn btn-outline-success" onclick="search_function()">Search</button>
-   </div>
+        <input class="form-control" type="text" placeholder="{{input_dict['search']}}" id="search_text">
+        <button class="btn btn-outline-success" onclick="search_function()">Search</button>
+    </div>
     <br>
-  <table class="table table-hover tablesorter">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Differences</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
+    <table class="table table-hover tablesorter">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>Differences</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for key in input_dict -%}
-          <tr>
+        <tr>
             <td>{{key}}</td>
-            <td>{{input_dict[key]}}</td>                        
+            <td>{{input_dict[key]}}</td>
             <td class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="restore(this)">Restore</button>
                 <button type="button" class="btn btn-danger" onclick="remove(this)">Remove</button>
             </td>
-          </tr>
+        </tr>
         {% endfor -%}
-    </tbody>
-  </table>
-  <div id="pager" class="pager">
-	<form>
-		<img src="http://tablesorter.com/addons/pager/icons/first.png" class="first"/>
-		<img src="http://tablesorter.com/addons/pager/icons/prev.png" class="prev"/>
-		<input type="text" class="pagedisplay"/>
-		<img src="http://tablesorter.com/addons/pager/icons/next.png" class="next"/>
-		<img src="http://tablesorter.com/addons/pager/icons/last.png" class="last"/>
-		<select class="pagesize">                       
-			<option selected="selected"  value="10">10</option>
-			<option value="20">20</option>
-			<option value="30">30</option>
-			<option value="40">40</option>
-		</select>
-	</form>
-</div>
+        </tbody>
+    </table>
+    <div id="pager" class="pager">
+        <form>
+            <img src="http://tablesorter.com/addons/pager/icons/first.png" class="first"/>
+            <img src="http://tablesorter.com/addons/pager/icons/prev.png" class="prev"/>
+            <input type="text" class="pagedisplay"/>
+            <img src="http://tablesorter.com/addons/pager/icons/next.png" class="next"/>
+            <img src="http://tablesorter.com/addons/pager/icons/last.png" class="last"/>
+            <select class="pagesize">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+            </select>
+        </form>
+    </div>
 
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
 
     <script type="text/javascript">
       var url = "http://127.0.0.1:8090/";
 
+      function getRequestInfo(url, reqType, reqData, callback) {
+                console.log("In getRequestInfo")
+                $.ajax({
+                    url: url,
+                    type: reqType,
+                    data: reqData,
+                    success: function (response) {
+                        console.log("Ok function")
+                        callback(response);
+                        if (response["status"] == "ok")
+                          location.reload()
+                         else {
+                          alert("Error: " + response["message"]);
+                         }
+                        return {
+                            "status": true,
+                            "result": response
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log("Bad function response")
+                        return {
+                            "status": false,
+                            "result": null,
+                            "xhr": jqXHR,
+                            "textStatus": textStatus,
+                            "errorThrown": errorThrown
+                        }
+                    }
+                }).done(function(){
+
+                });
+                return {
+                    "status": false,
+                    "result": null
+                }
+            }
+
+       function remove(obj) {
+        var par = obj.parentNode.parentNode.cells[0].innerHTML;
+        var r = confirm("Are you sure you want to remove this item: " + par + " ?")
+        if (r == true)
+        {
+          console.log("removing " + par);
+
+           var post_this = {
+            date: par
+           }
+
+          getRequestInfo(url + "delete_history", "post", post_this, function(data){
+          console.log(data);
+          if (data["status"] == "ok")
+            location.reload()
+        });
+        }
+        else
+        {
+          console.log("remove rejected")
+        }
+      }
+
+      function restore(obj) {
+        var par = obj.parentNode.parentNode.cells[0].innerHTML;
+        var r = confirm("Are you sure you want to restore this state of the ontology from " + par + " ?")
+        if (r == true)
+        {
+          console.log("restoring from " + par);
+
+           var post_this = {
+            date: par
+           }
+
+          getRequestInfo(url + "restore_history", "post", post_this, function(data){
+          console.log(data);
+          if (data["status"] == "ok")
+            location.reload()
+        });
+        }
+        else
+        {
+          console.log("restored history")
+        }
+      }
 
       $(document).ready(function() 
           { 
@@ -76,7 +165,10 @@
           }  
       );  
                                                                             
+
+
+
     </script>
 
-  </body>
+</body>
 </html>
