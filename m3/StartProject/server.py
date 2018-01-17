@@ -39,20 +39,22 @@ class Server(object):
             return json.loads(f.read())
 
     @cherrypy.expose
-    def history(self, search="history"):
+    def history(self, search=None):
         templates_env = Environment(loader=FileSystemLoader(templates_dir))
         template = templates_env.get_template('history.html')
         json_data = onto_history.addDataToJson()
+
         concepts = []
         concepts_diff = dict()
+
         for i in json_data.values():
             for j in range(len(i)):
-                if i[j:j+7] == 'replace':
-                    j = j+7
+                if i[j:j + 7] == 'replace':
+                    j = j + 7
                     concept = ""
                     while i[j] != '}':
                         concept += i[j]
-                        j+=1
+                        j += 1
                     concept += i[j]
                     concept += '\n'
                     concepts.append(concept)
@@ -61,11 +63,10 @@ class Server(object):
                     concept = ""
                     while i[j] != '}':
                         concept += i[j]
-                        j+=1
+                        j += 1
                     concept += i[j]
                     concept += '\n'
                     concepts.append(concept)
-
 
                 """if i[j] == '{':
                     print '\n\t'
@@ -74,7 +75,14 @@ class Server(object):
                 if i[j] == ']':
                     print '\n'"""
 
-        return template.render({"input_dict": json_data})
+        if search:
+            search_regex = re.compile(search)
+            for key in list(json_data.keys()):
+                if search_regex.search(json_data[key]):
+                    continue
+                del json_data[key]
+
+        return template.render({"input_dict": json_data, "search_value": search if search else ""})
 
     @cherrypy.expose
     def index(self, search=""):
