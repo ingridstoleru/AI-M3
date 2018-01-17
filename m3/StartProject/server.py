@@ -78,11 +78,14 @@ class Server(object):
                     print '\n'"""
 
         if search:
-            search_regex = re.compile(search)
-            for key in list(json_data.keys()):
-                if search_regex.search(json_data[key]):
-                    continue
-                del json_data[key]
+            try:
+                search_regex = re.compile(search)
+                for key in list(json_data.keys()):
+                    if search_regex.search(json_data[key]):
+                        continue
+                    del json_data[key]
+            except Exception:
+                traceback.print_exc()
 
         return template.render({"input_dict": json_data, "search_value": search if search else ""})
 
