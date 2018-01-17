@@ -44,6 +44,7 @@ class Server(object):
         template = templates_env.get_template('history.html')
         json_data = onto_history.addDataToJson()
         concepts = []
+        concepts_diff = dict()
         for i in json_data.values():
             for j in range(len(i)):
                 if i[j:j+7] == 'replace':
@@ -53,6 +54,7 @@ class Server(object):
                         concept += i[j]
                         j+=1
                     concept += i[j]
+                    concept += '\n'
                     concepts.append(concept)
 
                 if i[j] == ',':
@@ -61,15 +63,18 @@ class Server(object):
                         concept += i[j]
                         j+=1
                     concept += i[j]
+                    concept += '\n'
                     concepts.append(concept)
-                print concepts
+
+                concepts_diff[json_data.keys()[json_data.values().index(i)]] = concepts
                 """if i[j] == '{':
                     print '\n\t'
                 if i[j - 1] == '}' and i[j] == ',':
                     print '\n\n'
                 if i[j] == ']':
                     print '\n'"""
-        return template.render({"input_dict": json_data})
+
+        return template.render({"input_dict": concepts_diff})
 
     @cherrypy.expose
     def index(self, search=""):
