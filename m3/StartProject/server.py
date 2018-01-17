@@ -74,7 +74,7 @@ class Server(object):
                 if i[j] == ']':
                     print '\n'"""
 
-        return template.render({"input_dict": concepts_diff})
+        return template.render({"input_dict": json_data})
 
     @cherrypy.expose
     def index(self, search=""):
