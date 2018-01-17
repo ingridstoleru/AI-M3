@@ -1,234 +1,264 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <title>Hello, world!</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.2/js/jquery.tablesorter.min.js"></script> 
-    <script type="text/javascript" src="http://tablesorter.com/addons/pager/jquery.tablesorter.pager.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.29.2/js/jquery.tablesorter.min.js"></script>
+    <script src="http://tablesorter.com/addons/pager/jquery.tablesorter.pager.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    ></script>
 
-  </head>
-  <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="nav navbar-nav" id="navbarNav">
-    	<button class="btn btn-default navbar-btn navbar-right" data-toggle="modal" data-target="#help">Help</button>
-    	<button class="btn btn-danger navbar-btn navbar-right" onclick="save_json()">Save</button>
-        <button class="btn btn-warning navbar-btn navbar-right" onclick="reload_json()">Reload</button>
-        <button class="btn btn-warning navbar-btn navbar-right" data-toggle="modal" data-target="#add_modal">Add Item</button>
+</head>
+<body>
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="nav navbar-nav" id="navbarNav">
+            <button class="btn btn-danger navbar-btn" onclick="save_json()">Save</button>
+            <button class="btn btn-warning navbar-btn" onclick="reload_json()">Reload</button>
+
+        </div>
+        <div class="nav navbar-nav navbar-right">
+            <button class="btn btn-warning navbar-btn" onclick="location.href = 'history';">View History</button>
+        </div>
     </div>
-  </nav>
-  <br>
-  <div class="container">
-    <div class="input-group input-group-lg">
-     <input class="form-control" type="text" value="{{input_dict['search']}}" id="search_text">
-     <button class="btn btn-outline-success" onclick="search_function()">Search</button>
-   </div>
+</nav>
+<div class="container">
+    <button class="btn btn-default" data-toggle="modal" data-target="#help">Help</button>
+    <button class="btn btn-warning navbar-btn navbar-right" data-toggle="modal" data-target="#add_modal">Add
+    </button>
+</div>
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10">
+            <input class="form-control" type="text" value="{{input_dict['search']}}" id="search_text"
+                   style="width:100%;">
+        </div>
+        <div class="col-lg-2">
+            <button class="btn btn-default" onclick="search_function()">Search</button>
+        </div>
+    </div>
     <br>
-  <table class="table table-hover tablesorter">
-    <thead>
-      <tr>
-        <th> From </th>
-        <th> Relation </th>
-        <th> To </th>
-        <th> Type </th>
-        <th> Value </th>
-        <th> Text </th>
-        <th> Action </th>
-      </tr>
-    </thead>
-    <tbody>
+    <table class="table table-hover tablesorter">
+        <thead>
+        <tr>
+            <th> From</th>
+            <th> Relation</th>
+            <th> To</th>
+            <th> Type</th>
+            <th> Value</th>
+            <th> Text</th>
+            <th> Action</th>
+        </tr>
+        </thead>
+        <tbody>
         {% for concept in input_dict["output"] -%}
         {% for relation in input_dict["output"][concept] -%}
         {% for to_concept in input_dict["output"][concept][relation] -%}
-          <tr>
+        <tr>
             <td>{{concept}}</td>
-            <td>{{relation}}</td>                        
+            <td>{{relation}}</td>
             <td>{{to_concept}}</td>
-            <td>{% if relation|lower == "is_a" -%} 
+            <td>{% if relation|lower == "is_a" -%}
                 ->
                 {% else -%}
-               <->
+                <->
                 {% endif -%}
             </td>
             <td>{{input_dict["output"][concept][relation][to_concept][0]}}</td>
             <td>{% for prop in input_dict["output"][concept][relation][to_concept][1:] -%}
-                  {{prop}}
+                {{prop}}
                 {% endfor -%}
             </td>
             <td class="btn-group">
                 <button type="button" class="btn btn-warning" onclick="edit(this)">Edit</button>
                 <button type="button" class="btn btn-danger" onclick="remove(this)">Remove</button>
             </td>
-          </tr>
+        </tr>
         {% endfor -%}
         {% endfor -%}
         {% endfor -%}
-    </tbody>
-  </table>
-  <div id="pager" class="pager">
-	<form>
-		<img src="http://tablesorter.com/addons/pager/icons/first.png" class="first"/>
-		<img src="http://tablesorter.com/addons/pager/icons/prev.png" class="prev"/>
-		<input type="text" class="pagedisplay"/>
-		<img src="http://tablesorter.com/addons/pager/icons/next.png" class="next"/>
-		<img src="http://tablesorter.com/addons/pager/icons/last.png" class="last"/>
-		<select class="pagesize">                       
-			<option selected="selected"  value="10">10</option>
-			<option value="20">20</option>
-			<option value="30">30</option>
-			<option value="40">40</option>
-		</select>
- 	</form>
-   </div>
-     
-   <br>
-       <button onclick="location.href = 'history';" id="myButton" class="btn btn-warning" >Check History</button>
-   </br> 
-
-   
-  <div id="add_modal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="modal-from">From concept:</label>
-            <input type="text" id="add-modal-from" class="form-control" >
-          </div>
-          <div class="form-group">
-            <label for="modal-rel">Relation:</label>
-            <input type="text" id="add-modal-rel" class="form-control" >
-          </div>
-          <div class="form-group">
-            <label for="modal-to">To concept:</label>
-            <input type="text" id="add-modal-to" class="form-control" >
-          </div>
-          <div class="form-group">
-            <label for="add-modal-value">Value:</label>
-            <input type="text" id="add-modal-value" class="form-control" >
-          </div>
-          <div class="form-group">
-            <label for="add-modal-text">Text:</label>
-            <input type="text" id="add-modal-text" class="form-control" >
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" onclick="add(this)">Save</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-
+        </tbody>
+    </table>
+    <div id="pager" class="pager">
+        <form>
+            <img src="http://tablesorter.com/addons/pager/icons/first.png" class="first"/>
+            <img src="http://tablesorter.com/addons/pager/icons/prev.png" class="prev"/>
+            <input type="text" class="pagedisplay"/>
+            <img src="http://tablesorter.com/addons/pager/icons/next.png" class="next"/>
+            <img src="http://tablesorter.com/addons/pager/icons/last.png" class="last"/>
+            <select class="pagesize">
+                <option selected="selected" value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+            </select>
+        </form>
     </div>
-  </div>
-  </div>
 
-  <div id="help" class="modal fade" role="dialog">
-  	<div class="modal-dialog">
-  		<div class="modal-content">
-  			<div class="modal-header">
-  				<button type="button" class="close" data-dismiss="modal">&times;</button>
-  			</div>
-  			<div class="modal-body">
-  				<h2> &ensp; Artificial Intelligence <br> &ensp; &ensp; &ensp; Project – Module 3 <br> <br> </h2>
-  				<h3> &ensp;Help on the module webpage </h3>
-  				<p> &ensp; The webpage has 2 main sections: the main menu un the upper left corner and the center area.<br>
-  				The menu on the upper left corner of the page contains 3 buttons: <b>“Add Item”</b>, <b>“Save”</b> and <b>“Reload”</b>.</p>
-  				<h4> &ensp; Main menu </h4>
-  				<h5> &ensp; The <i>Add Item</i> button </h5>
-  				<p> &ensp; Upon selection, it will prompt a new window that will ask the user to enter the required data for a new relation. 
-  				The new window will ask the user to fill the following fields: <br>
-  				<u>From concept:</u> the base concept <br>
-  				<u>Relation:</u> the relation between the two concepts <br>
-  				<u>To concept:</u> the target concept <br>
-  				<u>Value:</u> what kind of relation it is (unidirectional or adirectional) <br>
-  				<u>Text:</u> phrases where this relation is identified <br>
-  				<b> All fields are mandatory. </b></p>
-
-  				<p>After completing all fields with the right type of data, the user can either save the newly entered relation by pressing the <b>“Save"</b> button or cancel the operation by pressing <b>“Cancel”</b>.
-				If the new relation imputed by the user leads to the formation of a cycle between the concepts.
-  				</p>
-  				<h5> &ensp; The <i>Save</i> button </h5>
-  				<p> &ensp; This button allows the user to save all the modifications made. 
-  				The modifications can be: the addition of new relations, the deletion of existing relations, the removal of relations. </p>
-  				<h5> &ensp; The <i>Reload</i> button </h5>
-  				<p> &ensp; Its effect is similar to a rollback. It goes back to the state before any modification performed by the user.
-  				After the user clicks on this button, it will be asked to confirm the action and acknowledge that all the work that was not save will be lost in the process. </p>
-  				<h5> &ensp; The <i>Help</i> button </h5>
-  				<p> &ensp; It opens a popup page in which the purpose of the site is presented and the actions allowed. </p>
-  				<h4> &ensp; Center area </h4>
-  				<p> &ensp; The center region of the page has the search bar.
-				Below the search bar there is a table with the relevant data to be displayed.
-				The table has 7 columns: <br>
-				<u>From:</u> first concept <br>
-				<u>Relation:</u> name of the relation between the two concepts <br>
-				<u>To:</u> second concept <br>
-				<u>Type:</u> simple graphical representation of the relation - which can be either unidirectional or adirectional <br>
-				<u>Value:</u> corresponding number for the relation <br>
-				<u>Text:</u> propositions where the relation is identified <br>
-				<u>Action:</u> two buttons <br>
-				An Edit button used to modify data about the entry and a Remove button that deletes the relation altogether. </p>
-
-				<p> Below the table it's the webpage pagination. <br> </p>
-				<h5> &ensp; The <i>Check History</i> button </h5>
-				<p> &ensp; At the bottom of the page it's the <b>“Check History”</b> button. This leads the user to a new page, similar to the center region of the main page. <br>
-				It has the search bar at the top and a table below it. In the table there are all the modifications performed on the ontology, with the date on which it was done, the content that was changed, and the options to restore or remove the modifications. </p>
-
-				<p> <u> Date:</u> The date at which the modification was performed. It is displayed in the format: <i>yyyy-mm-dd hh:mm:ss</i>. <br>
-				<u> Differences:</u> section of data edited in the JSON file (modified, added or removed) <br>
-				<u> Actions:</u> two buttons; restore modification or remove modification from history. <br>
-				Below the table we have the pagination. </p>
-  			</div>
-  		</div>
-  	</div>
-  </div>
-
-  <!-- Modal -->
-  <div id="customModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label for="modal-from">From concept:</label>
-            <input type="text" id="modal-from" class="form-control" >
-          </div>
-          <div class="form-group">
-            <label for="modal-rel">Relation:</label>
-            <input type="text" id="modal-rel" class="form-control" >
-          </div>
-          <div class="form-group">
-            <label for="modal-to">To concept:</label>
-            <input type="text" id="modal-to" class="form-control" >
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" onclick="save()">Save</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-
+    {% if main_concepts -%}
+    <br><br>
+    <div class="well">
+        {% for concept in main_concepts -%}
+        <span class="label label-default">{{concept}}</span>
+        {% endfor -%}
     </div>
-  </div>
-
+    {% endif -%}
 </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-  <script type="text/javascript">
+<div id="add_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modal-from">From concept:</label>
+                    <input type="text" id="add-modal-from" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="modal-rel">Relation:</label>
+                    <input type="text" id="add-modal-rel" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="modal-to">To concept:</label>
+                    <input type="text" id="add-modal-to" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="add-modal-value">Value:</label>
+                    <input type="text" id="add-modal-value" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="add-modal-text">Text:</label>
+                    <input type="text" id="add-modal-text" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="add(this)">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="help" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <h2> &ensp; Artificial Intelligence <br> &ensp; &ensp; &ensp; Project – Module 3 <br> <br></h2>
+                <h3> &ensp;Help on the module webpage </h3>
+                <p> &ensp; The webpage has 2 main sections: the main menu un the upper left corner and the center
+                    area.<br>
+                    The menu on the upper left corner of the page contains 3 buttons: <b>“Add Item”</b>,
+                    <b>“Save”</b> and <b>“Reload”</b>.</p>
+                <h4> &ensp; Main menu </h4>
+                <h5> &ensp; The <i>Add Item</i> button </h5>
+                <p> &ensp; Upon selection, it will prompt a new window that will ask the user to enter the required
+                    data for a new relation.
+                    The new window will ask the user to fill the following fields: <br>
+                    <u>From concept:</u> the base concept <br>
+                    <u>Relation:</u> the relation between the two concepts <br>
+                    <u>To concept:</u> the target concept <br>
+                    <u>Value:</u> what kind of relation it is (unidirectional or adirectional) <br>
+                    <u>Text:</u> phrases where this relation is identified <br>
+                    <b> All fields are mandatory. </b></p>
+
+                <p>After completing all fields with the right type of data, the user can either save the newly
+                    entered relation by pressing the <b>“Save"</b> button or cancel the operation by pressing <b>“Cancel”</b>.
+                    If the new relation imputed by the user leads to the formation of a cycle between the concepts.
+                </p>
+                <h5> &ensp; The <i>Save</i> button </h5>
+                <p> &ensp; This button allows the user to save all the modifications made.
+                    The modifications can be: the addition of new relations, the deletion of existing relations, the
+                    removal of relations. </p>
+                <h5> &ensp; The <i>Reload</i> button </h5>
+                <p> &ensp; Its effect is similar to a rollback. It goes back to the state before any modification
+                    performed by the user.
+                    After the user clicks on this button, it will be asked to confirm the action and acknowledge
+                    that all the work that was not save will be lost in the process. </p>
+                <h5> &ensp; The <i>Help</i> button </h5>
+                <p> &ensp; It opens a popup page in which the purpose of the site is presented and the actions
+                    allowed. </p>
+                <h4> &ensp; Center area </h4>
+                <p> &ensp; The center region of the page has the search bar.
+                    Below the search bar there is a table with the relevant data to be displayed.
+                    The table has 7 columns: <br>
+                    <u>From:</u> first concept <br>
+                    <u>Relation:</u> name of the relation between the two concepts <br>
+                    <u>To:</u> second concept <br>
+                    <u>Type:</u> simple graphical representation of the relation - which can be either
+                    unidirectional or adirectional <br>
+                    <u>Value:</u> corresponding number for the relation <br>
+                    <u>Text:</u> propositions where the relation is identified <br>
+                    <u>Action:</u> two buttons <br>
+                    An Edit button used to modify data about the entry and a Remove button that deletes the relation
+                    altogether. </p>
+
+                <p> Below the table it's the webpage pagination. <br></p>
+                <h5> &ensp; The <i>Check History</i> button </h5>
+                <p> &ensp; At the bottom of the page it's the <b>“Check History”</b> button. This leads the user to
+                    a new page, similar to the center region of the main page. <br>
+                    It has the search bar at the top and a table below it. In the table there are all the
+                    modifications performed on the ontology, with the date on which it was done, the content that
+                    was changed, and the options to restore or remove the modifications. </p>
+
+                <p><u> Date:</u> The date at which the modification was performed. It is displayed in the format:
+                    <i>yyyy-mm-dd hh:mm:ss</i>. <br>
+                    <u> Differences:</u> section of data edited in the JSON file (modified, added or removed) <br>
+                    <u> Actions:</u> two buttons; restore modification or remove modification from history. <br>
+                    Below the table we have the pagination. </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="customModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modal-from">From concept:</label>
+                    <input type="text" id="modal-from" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="modal-rel">Relation:</label>
+                    <input type="text" id="modal-rel" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="modal-to">To concept:</label>
+                    <input type="text" id="modal-to" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" onclick="save()">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
       var url = window.location.href;
 
 
@@ -426,7 +456,17 @@
         }
       }
 
-    </script>
 
-  </body>
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
 </html>

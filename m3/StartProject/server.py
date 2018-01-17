@@ -1,8 +1,10 @@
 import re
 import os
 import json
+import operator
 import cherrypy
 import subprocess
+import traceback
 from scripts import parse_json, generating_owl, onto_history
 import time
 from socket import *
@@ -150,11 +152,37 @@ class Server(object):
                             else:
                                 output[from_item][relation_item][to] = [value] + new_text
 
+        # main concepts
+        main_concepts = dict()
+        relations = set()
+        for from_concept in self.data:
+            if from_concept not in main_concepts:
+                main_concepts[from_concept] = dict()
+            for rel in self.data[from_concept]:
+                relations.add(rel)
+                main_concepts[from_concept][rel] = main_concepts[from_concept].get(rel, 0) + 1
+        for from_concept in self.data:
+            for rel in self.data[from_concept]:
+                for to_concept in self.data[from_concept][rel]:
+                    if to_concept not in main_concepts:
+                        main_concepts[to_concept] = dict()
+                    main_concepts[to_concept][rel] = main_concepts[to_concept].get(rel, 0) + \
+                                                     main_concepts[from_concept].get(rel, 0) + 1
+        concepts = set()
+        for rel in relations:
+            relation_score = {
+                x: main_concepts[x][rel] for x in main_concepts if rel in main_concepts[x]
+            }
+            try:
+                concepts.add(max(relation_score.items(), key=operator.itemgetter(1))[0])
+            except Exception:
+                traceback.print_exc()
+
         # return template.render({})
         custom_dict = dict()
         custom_dict["output"] = output
         custom_dict["search"] = search
-        return template.render({"input_dict": custom_dict})
+        return template.render({"input_dict": custom_dict, "main_concepts": list(concepts)})
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
