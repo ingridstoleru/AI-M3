@@ -1,6 +1,12 @@
+cold	caused by	cold virus
 cold	caused by	weak immune system
 cold	treated by	hot drinks
-cold	caused by ana	cold virus
+cold	treated by	sleeping
+cold	treated by me	hot drinks
+cold	treated by me	sleeping
 sore throat	caused by	bacterial infection
-aanana	nanskan	anskank
-aaa	is_a	aaa
+sore throat	caused by	cold drinks
+cold2	caused by	cold virus
+cold2	caused by	weak immune system
+cold2	treated by	hot drinks
+cold2	treated by	sleeping

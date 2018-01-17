@@ -1,3 +1,4 @@
 cherrypy
 jinja2
 selenium
+jsondiff

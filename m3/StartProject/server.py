@@ -271,6 +271,7 @@ class Server(object):
                 del (self.data[old_json['from']])
         except Exception as e:
             return {"status": "error", 'message': str(e)}
+        return {"status": "ok"}
 
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -335,7 +336,7 @@ class Server(object):
     @cherrypy.tools.json_out()
     def save(self):
         if (self._check_for_cycles == True):
-            {'status': 'error', 'message': 'there are cycles in the current relationships!'}
+            return {'status': 'error', 'message': 'there are cycles in the current relationships!'}
         with open(os.path.join(resources_dir, "output.json"), "w") as f:
             json.dump(self.data, f)
 
@@ -344,15 +345,18 @@ class Server(object):
         # (out, err) = proc.communicate()
         # print("Out: {} | Err: {}".format(out, err))
         # os.system(parse_script_path)
-        output_parser = parse_json.run()
-        print("Status save: {}".format(output_parser))
+        try:
+            output_parser = parse_json.run()
+            print("Status save: {}".format(output_parser))
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
 
-        # generate_script_path = os.path.join(scripts_dir, "generating_owl.py")
-        # os.system(generate_script_path)
-        output_generator = generating_owl.run()
-        print(self.data)
+        generate_script_path = os.path.join(scripts_dir, "generating_owl.py")
+        os.system(generate_script_path)
+        # output_generator = generating_owl.run()
+        # print(self.data)
         onto_history.DB().insert_into_table(self.data)
-        print("Status generator: {}".format(output_generator))
+        # print("Status generator: {}".format(output_generator))
         return {"status": "ok"}
 
     @cherrypy.expose

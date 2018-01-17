@@ -166,8 +166,8 @@
     <!-- http://purl.obolibrary.org/obo/GBA_0000001 -->
 
     <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000001">
+        <rdfs:concept2>cold virus</rdfs:concept2>
         <rdfs:concept1>cold</rdfs:concept1>
-        <rdfs:concept2>weak immune system</rdfs:concept2>
         <rdfs:relation>caused by</rdfs:relation>
     </owl:Class>
     
@@ -176,9 +176,9 @@
     <!-- http://purl.obolibrary.org/obo/GBA_0000002 -->
 
     <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000002">
-        <rdfs:concept2>hot drinks</rdfs:concept2>
-        <rdfs:relation>treated by</rdfs:relation>
+        <rdfs:relation>caused by</rdfs:relation>
         <rdfs:concept1>cold</rdfs:concept1>
+        <rdfs:concept2>weak immune system</rdfs:concept2>
     </owl:Class>
     
 
@@ -187,8 +187,8 @@
 
     <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000003">
         <rdfs:concept1>cold</rdfs:concept1>
-        <rdfs:concept2>cold virus</rdfs:concept2>
-        <rdfs:relation>caused by ana</rdfs:relation>
+        <rdfs:concept2>hot drinks</rdfs:concept2>
+        <rdfs:relation>treated by</rdfs:relation>
     </owl:Class>
     
 
@@ -196,9 +196,9 @@
     <!-- http://purl.obolibrary.org/obo/GBA_0000004 -->
 
     <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000004">
-        <rdfs:concept1>sore throat</rdfs:concept1>
-        <rdfs:relation>caused by</rdfs:relation>
-        <rdfs:concept2>bacterial infection</rdfs:concept2>
+        <rdfs:concept1>cold</rdfs:concept1>
+        <rdfs:concept2>sleeping</rdfs:concept2>
+        <rdfs:relation>treated by</rdfs:relation>
     </owl:Class>
     
 
@@ -206,9 +206,9 @@
     <!-- http://purl.obolibrary.org/obo/GBA_0000005 -->
 
     <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000005">
-        <rdfs:concept2>aaa</rdfs:concept2>
-        <rdfs:relation>aaa</rdfs:relation>
-        <rdfs:concept1>aaa</rdfs:concept1>
+        <rdfs:concept1>cold</rdfs:concept1>
+        <rdfs:relation>treated by me</rdfs:relation>
+        <rdfs:concept2>hot drinks</rdfs:concept2>
     </owl:Class>
     
 
@@ -216,9 +216,69 @@
     <!-- http://purl.obolibrary.org/obo/GBA_0000006 -->
 
     <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000006">
-        <rdfs:concept2>anskank</rdfs:concept2>
-        <rdfs:relation>nanskan</rdfs:relation>
-        <rdfs:concept1>aanana</rdfs:concept1>
+        <rdfs:relation>treated by me</rdfs:relation>
+        <rdfs:concept2>sleeping</rdfs:concept2>
+        <rdfs:concept1>cold</rdfs:concept1>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/GBA_0000007 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000007">
+        <rdfs:relation>caused by</rdfs:relation>
+        <rdfs:concept2>bacterial infection</rdfs:concept2>
+        <rdfs:concept1>sore throat</rdfs:concept1>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/GBA_0000008 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000008">
+        <rdfs:relation>caused by</rdfs:relation>
+        <rdfs:concept2>cold drinks</rdfs:concept2>
+        <rdfs:concept1>sore throat</rdfs:concept1>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/GBA_0000009 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000009">
+        <rdfs:relation>caused by</rdfs:relation>
+        <rdfs:concept1>cold2</rdfs:concept1>
+        <rdfs:concept2>cold virus</rdfs:concept2>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/GBA_0000010 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000010">
+        <rdfs:concept1>cold2</rdfs:concept1>
+        <rdfs:concept2>weak immune system</rdfs:concept2>
+        <rdfs:relation>caused by</rdfs:relation>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/GBA_0000011 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000011">
+        <rdfs:concept2>hot drinks</rdfs:concept2>
+        <rdfs:concept1>cold2</rdfs:concept1>
+        <rdfs:relation>treated by</rdfs:relation>
+    </owl:Class>
+    
+
+
+    <!-- http://purl.obolibrary.org/obo/GBA_0000012 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/GBA_0000012">
+        <rdfs:relation>treated by</rdfs:relation>
+        <rdfs:concept2>sleeping</rdfs:concept2>
+        <rdfs:concept1>cold2</rdfs:concept1>
     </owl:Class>
 </rdf:RDF>
 
