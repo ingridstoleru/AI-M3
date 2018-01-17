@@ -66,7 +66,7 @@ class Server(object):
                     concept += '\n'
                     concepts.append(concept)
 
-                concepts_diff[json_data.keys()[json_data.values().index(i)]] = concepts
+
                 """if i[j] == '{':
                     print '\n\t'
                 if i[j - 1] == '}' and i[j] == ',':
