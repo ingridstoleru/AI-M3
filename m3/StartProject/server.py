@@ -7,6 +7,7 @@ from scripts import parse_json, generating_owl, onto_history
 import time
 from socket import *
 from jinja2 import Environment, FileSystemLoader
+import sys
 
 sock = socket()
 sock.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
@@ -42,6 +43,32 @@ class Server(object):
         templates_env = Environment(loader=FileSystemLoader(templates_dir))
         template = templates_env.get_template('history.html')
         json_data = onto_history.addDataToJson()
+        concepts = []
+        for i in json_data.values():
+            for j in range(len(i)):
+                if i[j:j+7] == 'replace':
+                    j = j+7
+                    concept = ""
+                    while i[j] != '}':
+                        concept += i[j]
+                        j+=1
+                    concept += i[j]
+                    concepts.append(concept)
+
+                if i[j] == ',':
+                    concept = ""
+                    while i[j] != '}':
+                        concept += i[j]
+                        j+=1
+                    concept += i[j]
+                    concepts.append(concept)
+                print concepts
+                """if i[j] == '{':
+                    print '\n\t'
+                if i[j - 1] == '}' and i[j] == ',':
+                    print '\n\n'
+                if i[j] == ']':
+                    print '\n'"""
         return template.render({"input_dict": json_data})
 
     @cherrypy.expose
