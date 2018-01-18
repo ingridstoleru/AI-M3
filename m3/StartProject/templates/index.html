@@ -160,68 +160,73 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <h2> &ensp; Artificial Intelligence <br> &ensp; &ensp; &ensp; Project – Module 3 <br> <br></h2>
-                <h3> &ensp;Help on the module webpage </h3>
-                <p> &ensp; The webpage has 2 main sections: the main menu un the upper left corner and the center
-                    area.<br>
-                    The menu on the upper left corner of the page contains 3 buttons: <b>“Add Item”</b>,
-                    <b>“Save”</b> and <b>“Reload”</b>.</p>
-                <h4> &ensp; Main menu </h4>
-                <h5> &ensp; The <i>Add Item</i> button </h5>
-                <p> &ensp; Upon selection, it will prompt a new window that will ask the user to enter the required
-                    data for a new relation.
-                    The new window will ask the user to fill the following fields: <br>
-                    <u>From concept:</u> the base concept <br>
-                    <u>Relation:</u> the relation between the two concepts <br>
-                    <u>To concept:</u> the target concept <br>
-                    <u>Value:</u> what kind of relation it is (unidirectional or adirectional) <br>
-                    <u>Text:</u> phrases where this relation is identified <br>
-                    <b> All fields are mandatory. </b></p>
-
-                <p>After completing all fields with the right type of data, the user can either save the newly
-                    entered relation by pressing the <b>“Save"</b> button or cancel the operation by pressing <b>“Cancel”</b>.
-                    If the new relation imputed by the user leads to the formation of a cycle between the concepts.
-                </p>
-                <h5> &ensp; The <i>Save</i> button </h5>
-                <p> &ensp; This button allows the user to save all the modifications made.
+                <script type="text/javascript">
+                    var sign = '&ensp;';
+                    function print_(count){
+                        for(let i=0; i<count;i++)
+                            document.write(sign);
+                    }
+                </script>
+                <h2> <center>Artificial Intelligence Project – Module III </center> </h2> <br>
+                <h4> &ensp; <u> Introduction <script type="text/javascript"> print_(50); </script> </u> </h4>
+                <p> <center> This explanatory page is meant to be a short guide for the new users that use it, or a
+                    reminder for those who are not here for the first time.
+                    This guide divides the page in two sections: the menu bar, which is the black section at the top
+                    of the page, and the main section, the rest of the page. <br>
+                    We will cover both sections and their components in the following paragraphs.
+                    The menu bar contains 3 buttons: <b> Save </b> and <b> Reload </b> on the left side,
+                    and <b>View History</b> on the right side. </center> </p> <br>
+                <h4> &ensp; <u> Menu bar <script type="text/javascript"> print_(52); </script> </u> </h4>
+                <p> &ensp; <b> Save </b> - This button allows the user to save all the modifications made.
                     The modifications can be: the addition of new relations, the deletion of existing relations, the
                     removal of relations. </p>
-                <h5> &ensp; The <i>Reload</i> button </h5>
-                <p> &ensp; Its effect is similar to a rollback. It goes back to the state before any modification
-                    performed by the user.
-                    After the user clicks on this button, it will be asked to confirm the action and acknowledge
-                    that all the work that was not save will be lost in the process. </p>
-                <h5> &ensp; The <i>Help</i> button </h5>
-                <p> &ensp; It opens a popup page in which the purpose of the site is presented and the actions
-                    allowed. </p>
-                <h4> &ensp; Center area </h4>
-                <p> &ensp; The center region of the page has the search bar.
+                <p> &ensp; <b> Reload </b> - Its effect is similar to a rollback. It goes back to the state before
+                    any modification performed by the user. After the user clicks on this button, it will be asked
+                    to confirm the action and acknowledge that all the work that was not save will be lost in the
+                    process. </p>
+                <p> &ensp; <b>View History</b> - This leads the user to
+                    a new page, similar to the center region of the main page. It has the search bar at the top and
+                    a table below it. In the table there are all the modifications performed on the ontology, with
+                    the <u>date</u> on which it was done, the <u>content</u> that was changed, and the <u>options</u>
+                    to restore or remove the modifications. </p> <br>
+                <center> <p> Date - The date at which the modification was performed. <br> It is displayed in the format
+                    <i> yyyy-mm-dd hh:mm:ss </i>. <br>
+                    Content - Section of data edited in the JSON file (modified, added or removed). <br>
+                    Options - Two buttons; <b> restore </b> modification or <b> remove </b> modification from history. <br>
+                    Below the table we have the pagination. </p> <br> </center>
+                <h4> &ensp; <u> Main section <script type="text/javascript"> print_(49); </script> </u> </h4>
+                <p> This is the main part of the page. It has 2 more buttons: <b> Help </b> and <b> Add </b>.</p>
+                <p> &ensp; <b> Help </b> - It's where you are right now. Hello! :) </p>
+                <p> &ensp; <b> Add </b> Upon selection, it will prompt a new window that will ask the user to enter the required
+                    data for a new relation.
+                    The new window will ask the user to fill the following fields: <br>
+                    <center> From concept ==> the base concept <br>
+                    Relation ==> the relation between the two concepts <br>
+                    To concept ==> the target concept <br>
+                    Value ==> what kind of relation it is (unidirectional or adirectional) <br>
+                    Text ==> phrases where this relation is identified <br>
+                    <b> All fields are mandatory! </b></center> </p>
+                <center> <p> &ensp; After completing all fields with the right type of data, the user can either save the newly
+                    entered relation by pressing the <b>Save</b> button or cancel the operation by pressing <b>Cancel</b>.
+                    If the new relation imputed by the user leads to the formation of a cycle between the concepts.
+                </p>
+                <p> Below these two buttons is the <b> search bar </b>, which works with regular expressions.
                     Below the search bar there is a table with the relevant data to be displayed.
-                    The table has 7 columns: <br>
-                    <u>From:</u> first concept <br>
-                    <u>Relation:</u> name of the relation between the two concepts <br>
-                    <u>To:</u> second concept <br>
-                    <u>Type:</u> simple graphical representation of the relation - which can be either
+                    The <b> table </b> has 7 <b> columns </b>: <br> <br>
+                    From ==> first concept <br>
+                    Relation ==> name of the relation between the two concepts <br>
+                    To ==> second concept <br>
+                    Type ==> simple graphical representation of the relation - which can be either
                     unidirectional or adirectional <br>
-                    <u>Value:</u> corresponding number for the relation <br>
-                    <u>Text:</u> propositions where the relation is identified <br>
-                    <u>Action:</u> two buttons <br>
-                    An Edit button used to modify data about the entry and a Remove button that deletes the relation
-                    altogether. </p>
+                    Value ==> corresponding number for the relation <br>
+                    Text ==> propositions where the relation is identified <br>
+                    Action ==> two buttons <br> </center> </p>
+                <p> &ensp; <b> Edit </b> button - used to modify data about the entry. </p>
+                <p> &ensp; <b> Remove </b> button - it deletes the relation altogether. </p> <br>
 
-                <p> Below the table it's the webpage pagination. <br></p>
-                <h5> &ensp; The <i>Check History</i> button </h5>
-                <p> &ensp; At the bottom of the page it's the <b>“Check History”</b> button. This leads the user to
-                    a new page, similar to the center region of the main page. <br>
-                    It has the search bar at the top and a table below it. In the table there are all the
-                    modifications performed on the ontology, with the date on which it was done, the content that
-                    was changed, and the options to restore or remove the modifications. </p>
+                <center> <p> Below the table its the <b> pagination </b>,
+                    followed by some <b> key concepts </b> identified. <br> </p> </center>
 
-                <p><u> Date:</u> The date at which the modification was performed. It is displayed in the format:
-                    <i>yyyy-mm-dd hh:mm:ss</i>. <br>
-                    <u> Differences:</u> section of data edited in the JSON file (modified, added or removed) <br>
-                    <u> Actions:</u> two buttons; restore modification or remove modification from history. <br>
-                    Below the table we have the pagination. </p>
             </div>
         </div>
     </div>
@@ -261,8 +266,6 @@
 
 <script type="text/javascript">
       var url = window.location.href;
-
-
       function getRequestInfo(url, reqType, reqData, callback) {
                 console.log("In getRequestInfo")
                 $.ajax({
@@ -293,35 +296,28 @@
                         }
                     }
                 }).done(function(){
-
                 });
                 return {
                     "status": false,
                     "result": null
                 }
             }
-
-
       function myFunc(obj)
       {
         console.log("this is my obj: " + obj.cells.item(1).innerHTML)
         //$('#customModal').modal('show');
       }
-
       function edit(obj) {
         console.log(obj.parentNode.parentNode);
         var par = obj.parentNode.parentNode;
         document.getElementById("modal-from").value = par.cells.item(0).innerHTML;
         document.getElementById("modal-rel").value = par.cells.item(1).innerHTML;
         document.getElementById("modal-to").value = par.cells.item(2).innerHTML;
-
         document.getElementById("modal-from").setAttribute("old", par.cells.item(0).innerHTML);
         document.getElementById("modal-rel").setAttribute("old", par.cells.item(1).innerHTML);
         document.getElementById("modal-to").setAttribute("old", par.cells.item(2).innerHTML);
-
         $('#customModal').modal('show');
       }
-
       function save() {
         var old_dict = {
           from: document.getElementById("modal-from").getAttribute("old"),
@@ -333,7 +329,6 @@
           relation: document.getElementById("modal-rel").value,
           to: document.getElementById("modal-to").value
           }
-
         var post_this = {
           old: JSON.stringify(old_dict),
           new: JSON.stringify(new_dict),
@@ -345,29 +340,25 @@
             //location.reload()
         });
         $('#customModal').modal('show');
-
       }
-
       function search_function()
       {
         data=document.getElementById("search_text").value
         window.location.href = '/?search=' + '"' + data + '"'
       }
-
       window.onload = function() {
       $("#search_text").on('keyup', function (e) {
           if (e.keyCode == 13) {
               search_function();
           }
       });
-      
+
       };
-      $(document).ready(function() 
-          { 
-               $("table").tablesorter({widthFixed: true, widgets: ['zebra']}).tablesorterPager({container: $("#pager")}); 
-          }  
-      ); 
- 
+      $(document).ready(function()
+          {
+               $("table").tablesorter({widthFixed: true, widgets: ['zebra']}).tablesorterPager({container: $("#pager")});
+          }
+      );
 
       function restore_json()
       {
@@ -385,7 +376,6 @@
           console.log("restore rejected")
          }
       }
-
       function reload_json()
       {
         var r = confirm("Are you sure you want to reload the data (all unsaved work will be lost)?")
@@ -402,7 +392,6 @@
           console.log("reload rejected")
          }
       }
-
       function add(obj){
         var data = {
           from: document.getElementById("add-modal-from").value,
@@ -420,7 +409,6 @@
             //location.reload()
         });
       }
-
       function save_json()
       {
          getRequestInfo(url + "save", "post", {}, function(data){
@@ -429,7 +417,6 @@
             //location.reload()
         });
       }
-
       function remove(obj) {
         var par = obj.parentNode.parentNode;
         var r = confirm("Are you sure you want to delete this item: " + par.cells.item(0).innerHTML + "-" + par.cells.item(1).innerHTML + "-" + par.cells.item(2).innerHTML + "?")
@@ -444,7 +431,6 @@
            var post_this = {
             old: JSON.stringify(data)
            }
-
           getRequestInfo(url + "delete", "post", post_this, function(data){
           console.log(data);
           //if (data["status"] == "ok")
@@ -456,17 +442,6 @@
           console.log("delete rejected")
         }
       }
-
-
-
-
-
-
-
-
-
-
-
 </script>
 
 </body>
