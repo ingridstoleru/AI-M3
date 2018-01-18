@@ -379,7 +379,7 @@ class Server(object):
     def restore_history(self, date):
         restore_ontology = onto_history.DB().get_by_date(date)[0]
         self.data = json.loads(restore_ontology)
-
+        return {"status": "ok"}
 
 if __name__ == '__main__':
     cherrypy.quickstart(Server(), "/", "server.conf")
